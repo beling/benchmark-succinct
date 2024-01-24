@@ -1,5 +1,6 @@
-# Build directories
+# Build, VSCode, etc. directories
 /build/
+/.cache/
 
 # Prerequisites
 *.d

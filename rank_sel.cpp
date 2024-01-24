@@ -14,9 +14,9 @@ inline void black_box(T&& datum) {
 
 uint64_t xor_shift64(uint64_t& seed) {
     seed ^= seed << 13;
-	seed ^= seed >> 7;
-	seed ^= seed << 17;
-	return seed;
+    seed ^= seed >> 7;
+    seed ^= seed << 17;
+    return seed;
 }
 
 void print_ns(const char* label, double total_time, uint64_t runs = 1) {
