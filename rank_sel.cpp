@@ -22,13 +22,9 @@ uint64_t xor_shift64(uint64_t& seed) {
     return seed;
 }
 
-void print_ns(const char* label, double time) {
-    cout << "time / " << label << " [ns]: " << time << endl;
-}
-
 template<class T>
-void print_space_overhead(const char* label, const bit_vector& b, const T& sth) {
-    cout<< label << " space overhead: " << size_in_bytes(sth) * 100 / size_in_bytes(b) << '%' << endl;
+void print_result(const char* label, const bit_vector& b, const T& sth, double time) {
+    cout<< label << ":  space overhead " << size_in_bytes(sth) * 100 / size_in_bytes(b) << "\%  time/query " << time << "ns" << endl;
 }
 
 std::vector<std::size_t> rand_queries(std::size_t query_universe) {
@@ -56,20 +52,18 @@ inline double measure(F f) {   // warm + measure; result is in ns
 
 template<class rs>
 void benchmark_rank(const char* label, const bit_vector& b, const rs& rb, const std::vector<std::size_t>& queries) {
-    print_space_overhead(label, b, rb);
     double ns = measure([&] {
         for (auto index: queries) black_box(rb(index));
     });
-    print_ns(label, ns / queries.size());
+    print_result(label, b, rb, ns / queries.size());
 }
 
 template<class ss>
 void benchmark_select(const char* label, const bit_vector& b, const ss& sb, const std::vector<std::size_t>& queries) {
-    print_space_overhead(label, b, sb);
     double ns = measure([&] {
-        for (auto index: queries) black_box(sb(index));
+       for (auto index: queries) black_box(sb(index));
     });
-    print_ns(label, ns / queries.size());
+    print_result(label, b, sb, ns / queries.size());
 }
 
 int main(int argc, char *argv[]) 
