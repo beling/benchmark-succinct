@@ -8,7 +8,6 @@ using namespace std;
 using namespace sdsl;
 
 const std::uint64_t SEED = 1234;
-//const std::size_t STEPS_NUM = 194933;   // prime
 const std::size_t QUERIES = 1000000;
 
 template <class T>
@@ -23,8 +22,8 @@ uint64_t xor_shift64(uint64_t& seed) {
     return seed;
 }
 
-void print_ns(const char* label, double total_time, uint64_t runs = 1) {
-    cout << "time / " << label << " [ns]: " << total_time / runs << endl;
+void print_ns(const char* label, double time) {
+    cout << "time / " << label << " [ns]: " << time << endl;
 }
 
 template<class T>
@@ -56,32 +55,21 @@ inline double measure(F f) {   // warm + measure; result is in ns
 }
 
 template<class rs>
-void benchmark_rank(const char* label, const bit_vector& b, const rs& rb, const std::vector<std::size_t>& queries /*uint64_t universe*/) {
+void benchmark_rank(const char* label, const bit_vector& b, const rs& rb, const std::vector<std::size_t>& queries) {
     print_space_overhead(label, b, rb);
-    //auto step_by = max(universe / STEPS_NUM, uint64_t(1));
-    //auto queries = rand_queries(universe);
     double ns = measure([&] {
-        /*for (uint64_t index = 0; index < universe; index += step_by) {
-            black_box(rb(index));
-        }*/
         for (auto index: queries) black_box(rb(index));
     });
-    print_ns(label, ns, QUERIES /*universe / step_by*/);
+    print_ns(label, ns / queries.size());
 }
 
 template<class ss>
-void benchmark_select(const char* label, const bit_vector& b, const ss& sb, const std::vector<std::size_t>& queries/*, uint64_t num*/) {
+void benchmark_select(const char* label, const bit_vector& b, const ss& sb, const std::vector<std::size_t>& queries) {
     print_space_overhead(label, b, sb);
-    /*auto step_by = max(num / STEPS_NUM, uint64_t(1));
-    double ns = measure([&] {
-        for (uint64_t index = 1; index <= num; index += step_by) {
-            black_box(sb(index));
-        }
-    });*/
     double ns = measure([&] {
         for (auto index: queries) black_box(sb(index));
     });
-    print_ns(label, ns, QUERIES /*num / step_by*/);
+    print_ns(label, ns / queries.size());
 }
 
 int main(int argc, char *argv[]) 
