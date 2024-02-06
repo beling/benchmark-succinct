@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
             TIME_PER_TEST = chrono::seconds(stoull(argv[3]));
             if (argc > 4) {
                 QUERIES = stoull(argv[4]);
-                if (argc > 4) SEED = stoull(argv[5]);
+                if (argc > 5) SEED = stoull(argv[5]);
             }
         }
     }
