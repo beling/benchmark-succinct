@@ -93,19 +93,31 @@ int main(int argc, char *argv[])
     std::cout << "Time per warm up and test " << TIME_PER_TEST.count()
          << "s, number of random queries " << QUERIES
          << ", random seed " << SEED << "." << std::endl;
-    std::cout << "The bit vector consists of " << universe << " bits, including " << num << " ones." << std::endl;
 
     bit_vector b(universe, 0);
     uint64_t xs_seed = SEED;
-    auto to_insert = num;
+    /*auto to_insert = num;
     while (to_insert > 0) {
         auto bit_nr = xor_shift64(xs_seed) % universe;
         if (!b[bit_nr]) {
             b[bit_nr] = true;
             to_insert--;
         }
-    }
+    }*/
 
+    uint64_t number_of_ones = 0;
+    for (uint64_t i = 0; i < universe; ++i) {   // uniform
+        uint64_t remain_universe = universe - i;
+        uint64_t remain_num = num - number_of_ones;
+        bool included = xor_shift64(xs_seed) % remain_universe < remain_num;
+        if (included) {
+            b[i] = true;
+            number_of_ones += 1;
+        } 
+    }
+    num = number_of_ones;   // for future
+
+    std::cout << "The bit vector consists of " << universe << " bits, including " << num << " ones." << std::endl;
     {
         std::vector<std::size_t> rank_queries = rand_queries(universe);
         benchmark_rank("rank_v", b, rank_support_v<>(&b), rank_queries);
