@@ -12,5 +12,5 @@ make
 ```
 Notes:
 - the release compilation type enables optimisations native for the CPU in use,
-- the software and instructions have been tested under GNU/Linux with clang compiler and may require some modifications for other systems or compilers.
+- the software and instructions have been tested under GNU/Linux and may require some modifications for other systems.
 
