@@ -11,6 +11,6 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
 Notes:
-- the release compilation type enables optimizations native for the CPU in use,
+- release compilation type enables optimizations native to the CPU used for compilation,
 - the software and instructions have been tested under GNU/Linux and may require some modifications for other systems.
 
