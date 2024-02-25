@@ -4,6 +4,7 @@
 #include <sdsl/bit_vectors.hpp>
 #include <iostream>
 #include <chrono>
+#include <thread>
 #include <string>
 
 using namespace std;
@@ -42,6 +43,7 @@ std::vector<std::size_t> rand_queries(std::size_t query_universe, uint64_t from 
 
 template<class F>
 inline double measure(F f) {   // warm + measure; result is in ns
+    std::this_thread::sleep_for(TIME_PER_TEST / 3);
     unsigned iters = 1;
     auto start = chrono::steady_clock::now();
     while (chrono::steady_clock::now() - start < TIME_PER_TEST) {
@@ -90,20 +92,12 @@ int main(int argc, char *argv[])
         }
     }
 
-    std::cout << "Time per warm up and test " << TIME_PER_TEST.count()
+    std::cout << "Time per warm up and test " << TIME_PER_TEST.count() << "s, cooling " << (TIME_PER_TEST / 3).count()
          << "s, number of random queries " << QUERIES
          << ", random seed " << SEED << "." << std::endl;
 
     bit_vector b(universe, 0);
     uint64_t xs_seed = SEED;
-    /*auto to_insert = num;
-    while (to_insert > 0) {
-        auto bit_nr = xor_shift64(xs_seed) % universe;
-        if (!b[bit_nr]) {
-            b[bit_nr] = true;
-            to_insert--;
-        }
-    }*/
 
     uint64_t number_of_ones = 0;
     for (uint64_t i = 0; i < universe; ++i) {   // uniform
