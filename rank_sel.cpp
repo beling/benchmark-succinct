@@ -56,7 +56,7 @@ inline double measure(F f) {   // warm + measure; result is in ns
 }
 
 template<class rs>
-void benchmark_rank(const char* label, const bit_vector& b, const rs& rb, const std::vector<std::size_t>& queries) {
+inline void benchmark_rank(const char* label, const bit_vector& b, const rs& rb, const std::vector<std::size_t>& queries) {
     double ns = measure([&] {
         for (auto index: queries) black_box(rb(index));
     });
@@ -64,7 +64,7 @@ void benchmark_rank(const char* label, const bit_vector& b, const rs& rb, const 
 }
 
 template<class ss>
-void benchmark_select(const char* label, const bit_vector& b, const ss& sb, const std::vector<std::size_t>& queries) {
+inline void benchmark_select(const char* label, const bit_vector& b, const ss& sb, const std::vector<std::size_t>& queries) {
     double ns = measure([&] {
        for (auto index: queries) black_box(sb(index));
     });
